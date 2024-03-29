@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Drawing.Imaging;
 using System.IO;
 using System.Runtime.InteropServices;
 using System.Text;
@@ -13,7 +12,6 @@ using HKSDK;
 using HKSDK.Enums;
 using HKSDK.Models;
 using ReactiveUI;
-using Image = System.Drawing.Image;
 
 namespace CameraDemo.ViewModels;
 
@@ -226,7 +224,7 @@ public class MainWindowViewModel : ViewModelBase
     /// </summary>
     public async Task ChangeSavePath(Window window)
     {
-        OpenFolderDialog dialog = new OpenFolderDialog();
+        var dialog = new OpenFolderDialog();
         var result = await dialog.ShowAsync(window);
         if(string.IsNullOrWhiteSpace(result)) return;
 
@@ -236,7 +234,15 @@ public class MainWindowViewModel : ViewModelBase
     #endregion
 
     #region Private Methods
-
+    
+    public static T BytesToStructure<T>(byte[] packet)
+    {
+        GCHandle pinnedPacket = GCHandle.Alloc(packet, GCHandleType.Pinned);
+        var result = Marshal.PtrToStructure<T>(pinnedPacket.AddrOfPinnedObject());
+        pinnedPacket.Free();
+        return result!;
+    }
+    
     // 初始化，获取相机列表等
     private void Init()
     {
@@ -261,24 +267,25 @@ public class MainWindowViewModel : ViewModelBase
 
             var devicePtr = deviceList.DeviceInfos[i];
             var device = Marshal.PtrToStructure<DeviceInfo>(devicePtr);
+            var gigeInfo = BytesToStructure<GigeDeviceInfo>(device.SpecialInfo.stGigEInfo);
 
-            var deviceModel = Encoding.UTF8.GetString(device.GigEInfo.ModelName).Trim('\0');
-            Console.WriteLine($"        名称：{deviceModel}");
+            /*var buffer = device.GigEInfo[20..];
+            var deviceSerialNumber = Encoding.UTF8.GetString(buffer);*/
+            Console.WriteLine($"        用户自定义名称：{gigeInfo.UserDefinedName}");
+            Console.WriteLine($"        序列号：{gigeInfo.SerialNumber}");
+            Console.WriteLine($"        制造商名称：{gigeInfo.ManufacturerName}");
+            Console.WriteLine($"        设备型号：{gigeInfo.ModelName}");
+            Console.WriteLine($"        版本：{gigeInfo.DeviceVersion}");
+            Console.WriteLine($"        制造商的具体信息：{gigeInfo.ManufacturerSpecificInfo}");
 
-            var deviceSerialNumber = Encoding.UTF8.GetString(device.GigEInfo.SerialNumber).Trim('\0');
-            Console.WriteLine($"        序列号：{deviceSerialNumber}");
-
-            var deviceVersion = Encoding.UTF8.GetString(device.GigEInfo.DeviceVersion);
-            Console.WriteLine($"        版本：{deviceVersion}");
-
-            var ip1 = (device.GigEInfo.CurrentIp & 0xff000000) >> 24;
-            var ip2 = (device.GigEInfo.CurrentIp & 0x00ff0000) >> 16;
-            var ip3 = (device.GigEInfo.CurrentIp & 0x0000ff00) >> 8;
-            var ip4 = device.GigEInfo.CurrentIp & 0x000000ff;
+            var ip1 = (gigeInfo.CurrentIp & 0xff000000) >> 24;
+            var ip2 = (gigeInfo.CurrentIp & 0x00ff0000) >> 16;
+            var ip3 = (gigeInfo.CurrentIp & 0x0000ff00) >> 8;
+            var ip4 = (gigeInfo.CurrentIp & 0x000000ff);
             Console.WriteLine($"        设备IP：{ip1}:{ip2}:{ip3}:{ip4}");
 
-            _cameraIntPtrDictionary.Add($"{deviceModel}({deviceSerialNumber})", devicePtr);
-            CameraList.Add($"{deviceModel}({deviceSerialNumber})");
+            _cameraIntPtrDictionary.Add($"{gigeInfo.UserDefinedName}({gigeInfo.SerialNumber})", devicePtr);
+            CameraList.Add($"{gigeInfo.UserDefinedName}({gigeInfo.SerialNumber})");
         }
 
         // ReSharper disable once AccessToStaticMemberViaDerivedType
@@ -328,8 +335,6 @@ public class MainWindowViewModel : ViewModelBase
 
         // 保存图片
         using var stream = new MemoryStream(imageBytes);
-        var bitmap = Image.FromStream(stream);
-
         try
         {
             if (!Directory.Exists(ImageSavePath))
@@ -338,8 +343,8 @@ public class MainWindowViewModel : ViewModelBase
             }
 
             var dateTime = DateTimeOffset.FromUnixTimeMilliseconds(frameInfo.HostTimeStamp).LocalDateTime;
-            bitmap?.Save(Path.Combine(ImageSavePath, $"{dateTime:yyyy-MM-dd HH:mm:ss}.jpg"), ImageFormat.Jpeg);
-
+            
+            File.WriteAllBytes(Path.Combine(ImageSavePath, $"{dateTime:yyyy-MM-dd HH:mm:ss}.jpg"),imageBytes);
             Console.WriteLine($"保存完成");
         }
         catch (Exception e)

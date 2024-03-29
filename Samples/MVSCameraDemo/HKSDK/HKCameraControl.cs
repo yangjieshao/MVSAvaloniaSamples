@@ -16,7 +16,7 @@ public static class HkCameraControl
     /// <param name="layerType">传输协议类型，按位传入，可传多个</param>
     /// <param name="pstDevList">设备列表</param>
     /// <returns>接口是否运行成功</returns>
-    [DllImport("Lib/libMvCameraControl")]
+    [DllImport("libMvCameraControl")]
     public static extern int MV_CC_EnumDevices(uint layerType, out DeviceInfoList pstDevList);
 
     /// <summary>
@@ -25,7 +25,7 @@ public static class HkCameraControl
     /// <param name="handle">设备句柄</param>
     /// <param name="pstDevInfo">设备信息</param>
     /// <returns>接口是否运行成功</returns>
-    [DllImport("Lib/libMvCameraControl")]
+    [DllImport("libMvCameraControl")]
     public static extern int MV_CC_CreateHandle(out IntPtr handle, IntPtr pstDevInfo);
 
     /// <summary>
@@ -33,7 +33,7 @@ public static class HkCameraControl
     /// </summary>
     /// <param name="handle">设备句柄</param>
     /// <returns>接口是否运行成功</returns>
-    [DllImport("Lib/libMvCameraControl")]
+    [DllImport("libMvCameraControl")]
     public static extern int MV_CC_DestroyHandle(IntPtr handle);
 
     /// <summary>
@@ -43,7 +43,7 @@ public static class HkCameraControl
     /// <param name="nAccessMode">访问模式</param>
     /// <param name="nSwitchoverKey">访问秘钥</param>
     /// <returns>接口是否运行成功</returns>
-    [DllImport("Lib/libMvCameraControl")]
+    [DllImport("libMvCameraControl")]
     public static extern int MV_CC_OpenDevice(IntPtr handle, uint nAccessMode, ushort nSwitchoverKey);
 
     /// <summary>
@@ -51,7 +51,7 @@ public static class HkCameraControl
     /// </summary>
     /// <param name="handle">设备句柄</param>
     /// <returns>接口是否运行成功</returns>
-    [DllImport("Lib/libMvCameraControl")]
+    [DllImport("libMvCameraControl")]
     public static extern int MV_CC_CloseDevice(IntPtr handle);
 
     /// <summary>
@@ -59,7 +59,7 @@ public static class HkCameraControl
     /// </summary>
     /// <param name="handle">设备句柄</param>
     /// <returns>接口是否运行成功</returns>
-    [DllImport("Lib/libMvCameraControl")]
+    [DllImport("libMvCameraControl")]
     public static extern int MV_CC_StartGrabbing(IntPtr handle);
 
     /// <summary>
@@ -67,7 +67,7 @@ public static class HkCameraControl
     /// </summary>
     /// <param name="handle">设备句柄</param>
     /// <returns>接口是否运行成功</returns>
-    [DllImport("Lib/libMvCameraControl")]
+    [DllImport("libMvCameraControl")]
     public static extern int MV_CC_StopGrabbing(IntPtr handle);
 
     /// <summary>
@@ -76,7 +76,7 @@ public static class HkCameraControl
     /// <param name="handle">设备句柄</param>
     /// <param name="windowHandle">显示图像的窗口句柄</param>
     /// <returns>接口是否运行成功</returns>
-    [DllImport("Lib/libMvCameraControl")]
+    [DllImport("libMvCameraControl")]
     public static extern int MV_CC_Display(IntPtr handle, IntPtr windowHandle);
 
     /// <summary>
@@ -86,7 +86,7 @@ public static class HkCameraControl
     /// <param name="receiveImageCallback">接收图片数据的回调</param>
     /// <param name="userCustom">用户自定义变量</param>
     /// <returns>接口是否运行成功</returns>
-    [DllImport("Lib/libMvCameraControl")]
+    [DllImport("libMvCameraControl")]
     public static extern int MV_CC_RegisterImageCallBackEx(IntPtr handle,
         ReceiveImageDataDelegate receiveImageCallback, IntPtr userCustom);
 
@@ -96,7 +96,7 @@ public static class HkCameraControl
     /// <param name="handle">设备句柄</param>
     /// <param name="saveImageParams">保存图像参数</param>
     /// <returns>接口是否运行成功</returns>
-    [DllImport("Lib/libMvCameraControl")]
+    [DllImport("libMvCameraControl")]
     public static extern int MV_CC_SaveImageEx2(IntPtr handle, ref SaveImageParams saveImageParams);
 
     /// <summary>
@@ -106,7 +106,7 @@ public static class HkCameraControl
     /// <param name="strKey">设置项字符串名称</param>
     /// <param name="floatSetting">设置项结构</param>
     /// <returns>操作结果</returns>
-    [DllImport("Lib/libMvCameraControl")]
+    [DllImport("libMvCameraControl")]
     public static extern int MV_CC_GetFloatValue(IntPtr handle, string strKey, out FloatSettingModel floatSetting);
     
     /// <summary>
@@ -116,6 +116,6 @@ public static class HkCameraControl
     /// <param name="strKey">设置项字符串名称</param>
     /// <param name="value">要设置的值</param>
     /// <returns>操作结果</returns>
-    [DllImport("Lib/libMvCameraControl")]
+    [DllImport("libMvCameraControl")]
     public static extern int MV_CC_SetFloatValue(IntPtr handle, string strKey, float value);
 }

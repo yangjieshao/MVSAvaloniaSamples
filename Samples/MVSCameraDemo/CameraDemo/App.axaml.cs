@@ -1,7 +1,6 @@
 using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
-using Avalonia.Platform;
 using CameraDemo.ViewModels;
 using CameraDemo.Views;
 
@@ -25,11 +24,5 @@ public partial class App : Application
         }
 
         base.OnFrameworkInitializationCompleted();
-    }
-
-    public override void RegisterServices()
-    {
-        AvaloniaLocator.CurrentMutable.Bind<IFontManagerImpl>().ToConstant(new FontManager());
-        base.RegisterServices();
     }
 }

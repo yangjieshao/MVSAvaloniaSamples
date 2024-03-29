@@ -30,42 +30,42 @@ public struct GigeDeviceInfo
     /// 当前网关
     /// </summary>
     public uint DefaultGateWay;
-
+    
     /// <summary>
     /// 制造商名称
     /// </summary>
-    [MarshalAs(UnmanagedType.ByValArray, SizeConst = 32)]
-    public byte[] ManufacturerName;
-
+    [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 32)]
+    public string  ManufacturerName;
+    
     /// <summary>
     /// 设备型号
     /// </summary>
-    [MarshalAs(UnmanagedType.ByValArray, SizeConst = 32)]
-    public byte[] ModelName;
+    [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 32)]
+    public string ModelName;
 
     /// <summary>
     /// 设备版本
     /// </summary>
-    [MarshalAs(UnmanagedType.ByValArray, SizeConst = 32)]
-    public byte[] DeviceVersion;
+    [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 32)]
+    public string DeviceVersion;
 
     /// <summary>
     /// 制造商的具体信息
     /// </summary>
-    [MarshalAs(UnmanagedType.ByValArray, SizeConst = 48)]
-    public byte[] ManufacturerSpecificInfo;
+    [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 48)]
+    public string ManufacturerSpecificInfo;
 
     /// <summary>
     /// 序列号
     /// </summary>
-    [MarshalAs(UnmanagedType.ByValArray, SizeConst = 16)]
-    public byte[] SerialNumber;
+    [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 16)]
+    public string SerialNumber;
 
     /// <summary>
     /// 用户自定义名称
     /// </summary>
-    [MarshalAs(UnmanagedType.ByValArray, SizeConst = 16)]
-    public byte[] UserDefinedName;
+    [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 16)]
+    public string UserDefinedName;
 
     /// <summary>
     /// 网口IP地址

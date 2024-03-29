@@ -1,13 +1,10 @@
-<Application xmlns="https://github.com/avaloniaui"
-             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:local="using:CameraDemo"
-             x:Class="CameraDemo.App">
-
-    <Application.DataTemplates>
-        <local:ViewLocator/>
-    </Application.DataTemplates>
-
+<Application
+    RequestedThemeVariant="Light"
+    x:Class="CameraDemo.App"
+    xmlns="https://github.com/avaloniaui"
+    xmlns:local="using:CameraDemo"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
     <Application.Styles>
-        <FluentTheme Mode="Light"/>
+        <StyleInclude Source="avares://Semi.Avalonia/Themes/Index.axaml" />
     </Application.Styles>
 </Application>
