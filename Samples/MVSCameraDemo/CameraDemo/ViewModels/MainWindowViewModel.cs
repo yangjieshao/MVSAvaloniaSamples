@@ -269,8 +269,6 @@ public class MainWindowViewModel : ViewModelBase
             var device = Marshal.PtrToStructure<DeviceInfo>(devicePtr);
             var gigeInfo = BytesToStructure<GigeDeviceInfo>(device.SpecialInfo.stGigEInfo);
 
-            /*var buffer = device.GigEInfo[20..];
-            var deviceSerialNumber = Encoding.UTF8.GetString(buffer);*/
             Console.WriteLine($"        用户自定义名称：{gigeInfo.UserDefinedName}");
             Console.WriteLine($"        序列号：{gigeInfo.SerialNumber}");
             Console.WriteLine($"        制造商名称：{gigeInfo.ManufacturerName}");
@@ -327,8 +325,8 @@ public class MainWindowViewModel : ViewModelBase
         Console.WriteLine($"图片转换{b:x8}");
 
         // 将内存指针中的图片数据拷贝到托管数组中
-        var imageBytes = new byte[bufferSize];
-        Marshal.Copy(imageDataPtr, imageBytes, 0, bufferSize);
+        var imageBytes = new byte[saveImageParams.ImageLength];
+        Marshal.Copy(imageDataPtr, imageBytes, 0, imageBytes.Length);
 
         // 释放自己创建的内存指针
         Marshal.FreeHGlobal(imageDataPtr);
